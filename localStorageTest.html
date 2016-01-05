@@ -1,0 +1,78 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Local Storage test</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="../library/css/styles.css" type="text/css" />
+    </head>
+
+    <body>    
+
+        <div id="testLocalStorage" class="btn btn-default">Test LocalStorage</div>
+
+        <br/><br/>
+
+        <h4>Values from local storage:</h4>
+        <div id="response">
+            var: <span id="testVar"></span><br/>
+            array: <span id="testArray"></span><br/>
+            objekt: <span id="testJsonObj"></span>
+        </div>
+
+
+        <script src="../library/vendor_scripts.js"></script>
+        <script src="../library/custom_scripts.js"></script>
+        <script type="text/javascript">
+
+            //====================================================== 
+            //      NOTES
+            //======================================================
+
+            // Local stored values has to be saved as type "string", and they are retrived as type "string" as well. So one 
+            // needs to convert the variable back to its intended form (eg. integer, float, array, objects).
+
+            var testVar = "Hi there :-)";
+            var testJsonObj = {"A": {"A1": 1, "A2": 2, "A3": 3}, "B": {"B1": 1, "B2": 2, "B3": 3}};
+            var testArray = [1,2,3,4,5];
+
+            function checkForLocalStoargeSupport(){
+                var TtestJsonObj; var TtestArray; var TtestVar;
+
+                // Simple variables.
+                localStorage.setItem("testVar", testVar);   // This is how to save a simple variable in "LocalStorage"
+                TtestVar = localStorage.getItem("testVar")  // This is how to get a simple variable in "LocalStorage"
+                console.log("checkForLocalStoargeSupport - getItem 1: " + TtestVar);
+
+                // Arrays:
+                localStorage.setItem("testArray", JSON.stringify(testArray));   // This is how to save an array in "LocalStorage"
+                TtestArray = JSON.parse(localStorage.getItem("testArray"))      // This is how to get an array in "LocalStorage"
+                console.log("checkForLocalStoargeSupport - getItem 1: " + JSON.stringify(TtestArray));
+
+                // Objects:
+                localStorage.setItem("testJsonObj", JSON.stringify(testJsonObj));   // This is how to save an object in "LocalStorage"
+                TtestJsonObj = JSON.parse(localStorage.getItem("testJsonObj"))      // This is how to get an object in "LocalStorage"
+                console.log("checkForLocalStoargeSupport - getItem 1: " + JSON.stringify(TtestJsonObj));
+
+
+                if(typeof(Storage) !== "undefined") {
+                    $('#testVar').text(TtestVar);
+                    $('#testArray').text(JSON.stringify(TtestArray));
+                    $('#testJsonObj').text(JSON.stringify(TtestJsonObj));
+                } else {
+                    alert("LocalStorage NOT supported!");
+                    console.log("LocalStorage NOT supported!");
+                }
+            }
+
+            $( document ).on('click', "#testLocalStorage", function(event){
+                checkForLocalStoargeSupport();
+            });
+
+            $(document).ready(function() {
+            });
+        </script>
+    </body>
+
+</html>
